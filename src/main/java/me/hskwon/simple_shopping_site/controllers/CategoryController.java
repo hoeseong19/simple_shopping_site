@@ -20,7 +20,11 @@ public class CategoryController {
 
     @GetMapping()
     public ListCategoryDto getList() {
-        List<CategoryDto> categories = getListCategoryService.getList();
+        List<CategoryDto> categories = getListCategoryService
+                .getList()
+                .stream()
+                .map(CategoryDto::of)
+                .toList();
 
         return new ListCategoryDto(categories);
     }
