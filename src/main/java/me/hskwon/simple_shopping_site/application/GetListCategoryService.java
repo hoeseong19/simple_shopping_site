@@ -1,16 +1,22 @@
 package me.hskwon.simple_shopping_site.application;
 
 import me.hskwon.simple_shopping_site.models.Category;
-import me.hskwon.simple_shopping_site.models.CategoryId;
+import me.hskwon.simple_shopping_site.repositories.CategoryRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class GetListCategoryService {
-    public List<Category> getList() {
-        Category category = new Category(new CategoryId("id"), "name");
+    private final CategoryRepository categoryRepository;
 
-        return List.of(category);
+    public GetListCategoryService(CategoryRepository categoryRepository) {
+        this.categoryRepository = categoryRepository;
+    }
+
+    public List<Category> getList() {
+        List<Category> categories = categoryRepository.findAll();
+
+        return categories;
     }
 }
