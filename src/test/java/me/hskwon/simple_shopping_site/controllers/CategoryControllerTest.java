@@ -1,6 +1,6 @@
 package me.hskwon.simple_shopping_site.controllers;
 
-import me.hskwon.simple_shopping_site.application.GetListCategoryService;
+import me.hskwon.simple_shopping_site.application.categories.GetListCategoryService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

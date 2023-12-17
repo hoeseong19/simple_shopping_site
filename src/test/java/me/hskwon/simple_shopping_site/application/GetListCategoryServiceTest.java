@@ -1,6 +1,7 @@
 package me.hskwon.simple_shopping_site.application;
 
 import jakarta.transaction.Transactional;
+import me.hskwon.simple_shopping_site.application.categories.GetListCategoryService;
 import me.hskwon.simple_shopping_site.models.Category;
 import me.hskwon.simple_shopping_site.models.CategoryId;
 import me.hskwon.simple_shopping_site.repositories.CategoryRepository;

@@ -1,6 +1,6 @@
 package me.hskwon.simple_shopping_site.controllers;
 
-import me.hskwon.simple_shopping_site.application.GetListCategoryService;
+import me.hskwon.simple_shopping_site.application.categories.GetListCategoryService;
 import me.hskwon.simple_shopping_site.dtos.CategoryDto;
 import me.hskwon.simple_shopping_site.dtos.ListCategoryDto;
 import org.springframework.web.bind.annotation.GetMapping;

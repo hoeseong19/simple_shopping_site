@@ -1,4 +1,4 @@
-package me.hskwon.simple_shopping_site.application;
+package me.hskwon.simple_shopping_site.application.categories;
 
 import me.hskwon.simple_shopping_site.models.Category;
 import me.hskwon.simple_shopping_site.repositories.CategoryRepository;
