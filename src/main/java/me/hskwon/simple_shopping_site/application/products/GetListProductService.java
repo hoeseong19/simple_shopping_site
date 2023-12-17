@@ -1,6 +1,6 @@
 package me.hskwon.simple_shopping_site.application.products;
 
-import me.hskwon.simple_shopping_site.dtos.ProductSummaryDto;
+import me.hskwon.simple_shopping_site.models.Product;
 import me.hskwon.simple_shopping_site.repositories.ProductRepository;
 import org.springframework.stereotype.Service;
 
@@ -14,12 +14,9 @@ public class GetListProductService {
         this.productRepository = productRepository;
     }
 
-    public List<ProductSummaryDto> getListProduct() {
-        List<ProductSummaryDto> products = productRepository
-                .findAll()
-                .stream()
-                .map(ProductSummaryDto::of)
-                .toList();
+    public List<Product> getListProduct() {
+        List<Product> products = productRepository
+                .findAll();
 
         return products;
     }

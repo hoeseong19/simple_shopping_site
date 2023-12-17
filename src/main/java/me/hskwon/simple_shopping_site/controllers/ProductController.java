@@ -20,7 +20,11 @@ public class ProductController {
 
     @GetMapping()
     ListProductDto getListProduct() {
-        List<ProductSummaryDto> products = getListProductService.getListProduct();
+        List<ProductSummaryDto> products = getListProductService
+                .getListProduct()
+                .stream()
+                .map(ProductSummaryDto::of)
+                .toList();
 
         return new ListProductDto(products);
     }
