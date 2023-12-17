@@ -9,4 +9,8 @@ import jakarta.persistence.Table;
 public class Product {
     @EmbeddedId
     private ProductId id;
+
+    public ProductId id() {
+        return id;
+    }
 }
