@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 @SpringBootTest
 class GetListProductServiceTest {
@@ -23,5 +24,7 @@ class GetListProductServiceTest {
     @DisplayName("getListProduct")
     void testGetListProduct() {
         getListProductService.getListProduct();
+
+        verify(productRepository).findAll();
     }
 }
