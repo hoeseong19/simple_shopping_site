@@ -1,15 +1,14 @@
 package me.hskwon.simple_shopping_site.models;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 
 @Embeddable
-public class ProductId {
-    @Column(name = "id")
-    String value;
+public class ProductId extends EntityId {
+    private ProductId() {
+        super();
+    }
 
-    @Override
-    public String toString() {
-        return value;
+    public ProductId(String value) {
+        super(value);
     }
 }

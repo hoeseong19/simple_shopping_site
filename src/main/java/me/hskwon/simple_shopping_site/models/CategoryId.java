@@ -1,20 +1,11 @@
 package me.hskwon.simple_shopping_site.models;
 
-import jakarta.persistence.Column;
-
-public class CategoryId {
-    @Column(name = "id")
-    String value;
-
+public class CategoryId extends EntityId {
     private CategoryId() {
+        super();
     }
 
     public CategoryId(String value) {
-        this.value = value;
-    }
-
-    @Override
-    public String toString() {
-        return value;
+        super(value);
     }
 }
