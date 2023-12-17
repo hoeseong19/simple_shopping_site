@@ -9,6 +9,7 @@ public class Money {
     Long amount;
 
     private Money() {
+        super();
     }
 
     public Money(Long amount) {

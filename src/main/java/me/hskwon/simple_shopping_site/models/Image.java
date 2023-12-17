@@ -7,7 +7,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "images")
-public class Image {
+public class Image extends BaseEntity {
     @EmbeddedId
     private ImageId id;
 
@@ -15,6 +15,7 @@ public class Image {
     private String url;
 
     private Image() {
+        super();
     }
 
     public Image(ImageId id, String url) {

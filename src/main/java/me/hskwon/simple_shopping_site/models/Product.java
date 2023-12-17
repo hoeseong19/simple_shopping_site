@@ -1,16 +1,13 @@
 package me.hskwon.simple_shopping_site.models;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "products")
-public class Product {
+public class Product extends BaseEntity {
     @EmbeddedId
     private ProductId id;
 
@@ -26,11 +23,16 @@ public class Product {
     @OrderBy("id")
     private List<Image> images = new ArrayList<>();
 
-    @CreationTimestamp
-    private LocalDateTime createdAt;
+    private Product() {
+        super();
+    }
 
-    @UpdateTimestamp
-    private LocalDateTime updatedAt;
+    public Product(ProductId id, String name, Money price, List<Image> images) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.images = images;
+    }
 
     public ProductId id() {
         return id;
