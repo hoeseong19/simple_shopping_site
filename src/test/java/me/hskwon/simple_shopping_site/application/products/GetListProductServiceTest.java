@@ -1,17 +1,22 @@
 package me.hskwon.simple_shopping_site.application.products;
 
+import me.hskwon.simple_shopping_site.repositories.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import static org.mockito.Mockito.mock;
+
 @SpringBootTest
 class GetListProductServiceTest {
+    private ProductRepository productRepository;
     private GetListProductService getListProductService;
 
     @BeforeEach
     void setUp() {
-        getListProductService = new GetListProductService();
+        productRepository = mock(ProductRepository.class);
+        getListProductService = new GetListProductService(productRepository);
     }
 
     @Test
