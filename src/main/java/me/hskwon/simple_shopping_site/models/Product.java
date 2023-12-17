@@ -1,9 +1,6 @@
 package me.hskwon.simple_shopping_site.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -17,6 +14,10 @@ public class Product {
 
     @Column(name = "name")
     String name;
+
+    @Embedded
+    @AttributeOverride(name = "amount", column = @Column(name = "price"))
+    private Money price;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
