@@ -23,6 +23,11 @@ public class Product extends BaseEntity {
     @OrderBy("id")
     private List<Image> images = new ArrayList<>();
 
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "product_options")
+    @OrderBy("id")
+    private List<ProductOption> options = new ArrayList<>();
+
     private Product() {
         super();
     }
