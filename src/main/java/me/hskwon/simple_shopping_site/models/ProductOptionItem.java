@@ -22,4 +22,12 @@ public class ProductOptionItem extends BaseEntity {
         this.id = id;
         this.name = name;
     }
+
+    public ProductOptionItemId id() {
+        return id;
+    }
+
+    public String name() {
+        return name;
+    }
 }
