@@ -4,6 +4,9 @@ import me.hskwon.simple_shopping_site.models.Product;
 import me.hskwon.simple_shopping_site.models.ProductId;
 import me.hskwon.simple_shopping_site.repositories.ProductRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Service
 public class GetProductService {
@@ -15,6 +18,6 @@ public class GetProductService {
 
     public Product getProduct(String id) {
         return productRepository.findById(new ProductId(id))
-                .orElseThrow();
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
     }
 }

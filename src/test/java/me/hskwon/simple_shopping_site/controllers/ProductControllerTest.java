@@ -13,14 +13,15 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -99,7 +100,7 @@ class ProductControllerTest {
 
     @Test
     @DisplayName("GET /products/{id} - existing")
-    void testGetProduct() throws Exception {
+    void testGetExistingProduct() throws Exception {
         String mockProductId = "id";
         ProductId productId = new ProductId(mockProductId);
 
@@ -117,6 +118,22 @@ class ProductControllerTest {
 
         mockMvc.perform(requestBuilder)
                 .andExpect(status().isOk());
+
+        verify(getProductService).getProduct(any());
+    }
+
+
+    @Test
+    @DisplayName("GET /products/{id} - non-existent")
+    void testGetNonExistentProduct() throws Exception {
+        String mockProductId = "id";
+
+        when(getProductService.getProduct(any())).thenThrow(new ResponseStatusException(NOT_FOUND));
+
+        RequestBuilder requestBuilder = get("/products/%s".formatted(mockProductId));
+
+        mockMvc.perform(requestBuilder)
+                .andExpect(status().isNotFound());
 
         verify(getProductService).getProduct(any());
     }

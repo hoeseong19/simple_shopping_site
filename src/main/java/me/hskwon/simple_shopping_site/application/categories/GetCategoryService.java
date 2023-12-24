@@ -4,6 +4,9 @@ import me.hskwon.simple_shopping_site.models.Category;
 import me.hskwon.simple_shopping_site.models.CategoryId;
 import me.hskwon.simple_shopping_site.repositories.CategoryRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Service
 public class GetCategoryService {
@@ -15,6 +18,6 @@ public class GetCategoryService {
 
     public Category getCategory(CategoryId categoryId) {
         return categoryRepository.findById(categoryId)
-                .orElseThrow();
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND));
     }
 }
