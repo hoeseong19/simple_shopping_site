@@ -1,7 +1,10 @@
 package me.hskwon.simple_shopping_site.controllers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import me.hskwon.simple_shopping_site.application.categories.GetCategoryService;
 import me.hskwon.simple_shopping_site.application.products.GetListProductService;
+import me.hskwon.simple_shopping_site.dtos.ProductSummaryDto;
+import me.hskwon.simple_shopping_site.models.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +28,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class ProductControllerTest {
     @Autowired
     MockMvc mockMvc;
+
+    @Autowired
+    ObjectMapper objectMapper;
 
     @MockBean
     GetListProductService getListProductService;
@@ -52,10 +58,38 @@ class ProductControllerTest {
     void testGetListProduct() throws Exception {
         RequestBuilder requestBuilder = get("/products");
 
+        String json = """
+                {
+                     "id": "0BV000PRO0001",
+                     "category": { "id": "0BV000CAT0001", "name": "top" },
+                     "thumbnail": { "url": "https://ahastudio.github.io/my-image-assets/images/cbcl-products/01.jpg" },
+                     "name": "CBCL 하트자수맨투맨",
+                     "price": 128000
+                 }
+                """;
+
+        ProductSummaryDto productSummaryDto = objectMapper.readValue(json, ProductSummaryDto.class);
+
+        Product product = new Product(
+                new ProductId(productSummaryDto.id()),
+                new CategoryId(productSummaryDto.category().id()),
+                productSummaryDto.name(),
+                new Money(productSummaryDto.price()),
+                List.of(new Image(new ImageId("id"), productSummaryDto.thumbnail().url()))
+        );
+
+        given(getListProductService.getListProduct()).willReturn(List.of(product));
+
+        given(getCategoryService.getCategory(any())).willReturn(new Category(
+                new CategoryId(productSummaryDto.category().id()),
+                productSummaryDto.category().name()
+        ));
+
         mockMvc.perform(requestBuilder)
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("products")));
 
         verify(getListProductService).getListProduct();
+        verify(getCategoryService).getCategory(any());
     }
 }
