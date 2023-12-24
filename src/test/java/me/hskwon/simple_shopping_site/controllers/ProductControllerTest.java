@@ -1,5 +1,6 @@
 package me.hskwon.simple_shopping_site.controllers;
 
+import me.hskwon.simple_shopping_site.application.categories.GetCategoryService;
 import me.hskwon.simple_shopping_site.application.products.GetListProductService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,6 +23,9 @@ class ProductControllerTest {
 
     @MockBean
     GetListProductService getListProductService;
+
+    @MockBean
+    GetCategoryService getCategoryService;
 
     @Test
     @DisplayName("GET /products")

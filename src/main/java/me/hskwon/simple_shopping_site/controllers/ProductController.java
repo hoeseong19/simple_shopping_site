@@ -1,5 +1,6 @@
 package me.hskwon.simple_shopping_site.controllers;
 
+import me.hskwon.simple_shopping_site.application.categories.GetCategoryService;
 import me.hskwon.simple_shopping_site.application.products.GetListProductService;
 import me.hskwon.simple_shopping_site.dtos.ListProductDto;
 import me.hskwon.simple_shopping_site.dtos.ProductSummaryDto;
@@ -14,8 +15,11 @@ import java.util.List;
 public class ProductController {
     private final GetListProductService getListProductService;
 
-    public ProductController(GetListProductService getListProductService) {
+    private final GetCategoryService getCategoryService;
+
+    public ProductController(GetListProductService getListProductService, GetCategoryService getCategoryService) {
         this.getListProductService = getListProductService;
+        this.getCategoryService = getCategoryService;
     }
 
     @GetMapping()
