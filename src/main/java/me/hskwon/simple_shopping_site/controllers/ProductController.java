@@ -4,6 +4,7 @@ import me.hskwon.simple_shopping_site.application.categories.GetCategoryService;
 import me.hskwon.simple_shopping_site.application.products.GetListProductService;
 import me.hskwon.simple_shopping_site.dtos.ListProductDto;
 import me.hskwon.simple_shopping_site.dtos.ProductSummaryDto;
+import me.hskwon.simple_shopping_site.models.Category;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,7 +28,11 @@ public class ProductController {
         List<ProductSummaryDto> products = getListProductService
                 .getListProduct()
                 .stream()
-                .map(ProductSummaryDto::of)
+                .map(product -> {
+                    Category category = getCategoryService.getCategory(product.categoryId());
+
+                    return ProductSummaryDto.of(product, category);
+                })
                 .toList();
 
         return new ListProductDto(products);
