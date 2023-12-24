@@ -46,4 +46,8 @@ public class Product extends BaseEntity {
     public String name() {
         return name;
     }
+
+    public List<Image> images() {
+        return images;
+    }
 }
