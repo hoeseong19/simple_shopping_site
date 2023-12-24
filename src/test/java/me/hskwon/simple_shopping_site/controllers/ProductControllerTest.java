@@ -92,4 +92,15 @@ class ProductControllerTest {
         verify(getListProductService).getListProduct();
         verify(getCategoryService).getCategory(any());
     }
+
+    @Test
+    @DisplayName("GET /products/{id}")
+    void testGetProduct() throws Exception {
+        String mockProductId = "id";
+
+        RequestBuilder requestBuilder = get("/products/%s".formatted(mockProductId));
+
+        mockMvc.perform(requestBuilder)
+                .andExpect(status().isOk());
+    }
 }

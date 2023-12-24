@@ -3,9 +3,11 @@ package me.hskwon.simple_shopping_site.controllers;
 import me.hskwon.simple_shopping_site.application.categories.GetCategoryService;
 import me.hskwon.simple_shopping_site.application.products.GetListProductService;
 import me.hskwon.simple_shopping_site.dtos.ListProductDto;
+import me.hskwon.simple_shopping_site.dtos.ProductDetailDto;
 import me.hskwon.simple_shopping_site.dtos.ProductSummaryDto;
 import me.hskwon.simple_shopping_site.models.Category;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -36,5 +38,10 @@ public class ProductController {
                 .toList();
 
         return new ListProductDto(products);
+    }
+
+    @GetMapping("/{id}")
+    ProductDetailDto getProduct(@PathVariable("id") String id) {
+        return new ProductDetailDto(id);
     }
 }
