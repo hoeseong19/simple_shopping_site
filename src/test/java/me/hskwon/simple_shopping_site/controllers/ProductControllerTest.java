@@ -10,7 +10,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 
+import java.util.List;
+
 import static org.hamcrest.Matchers.containsString;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -26,6 +31,21 @@ class ProductControllerTest {
 
     @MockBean
     GetCategoryService getCategoryService;
+
+    @Test
+    @DisplayName("GET /products - empty")
+    void testGetEmptyListProduct() throws Exception {
+        RequestBuilder requestBuilder = get("/products");
+
+        given(getListProductService.getListProduct()).willReturn(List.of());
+
+        mockMvc.perform(requestBuilder)
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("products")));
+
+        verify(getListProductService).getListProduct();
+        verify(getCategoryService, times(0)).getCategory(any());
+    }
 
     @Test
     @DisplayName("GET /products")
