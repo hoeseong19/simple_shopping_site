@@ -50,4 +50,8 @@ public class Product extends BaseEntity {
     public List<Image> images() {
         return images;
     }
+
+    public Money price() {
+        return price;
+    }
 }
