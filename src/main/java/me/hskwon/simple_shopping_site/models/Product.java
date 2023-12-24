@@ -11,6 +11,10 @@ public class Product extends BaseEntity {
     @EmbeddedId
     private ProductId id;
 
+    @Embedded
+    @AttributeOverride(name = "value", column = @Column(name = "category_id"))
+    private CategoryId categoryId;
+
     @Column(name = "name")
     private String name;
 
@@ -32,8 +36,9 @@ public class Product extends BaseEntity {
         super();
     }
 
-    public Product(ProductId id, String name, Money price, List<Image> images) {
+    public Product(ProductId id, CategoryId categoryId, String name, Money price, List<Image> images) {
         this.id = id;
+        this.categoryId = categoryId;
         this.name = name;
         this.price = price;
         this.images = images;
@@ -41,6 +46,10 @@ public class Product extends BaseEntity {
 
     public ProductId id() {
         return id;
+    }
+
+    public CategoryId categoryId() {
+        return categoryId;
     }
 
     public String name() {
