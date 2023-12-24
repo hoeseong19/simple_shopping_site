@@ -3,6 +3,7 @@ package me.hskwon.simple_shopping_site.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import me.hskwon.simple_shopping_site.application.categories.GetCategoryService;
 import me.hskwon.simple_shopping_site.application.products.GetListProductService;
+import me.hskwon.simple_shopping_site.application.products.GetProductService;
 import me.hskwon.simple_shopping_site.dtos.ProductSummaryDto;
 import me.hskwon.simple_shopping_site.models.*;
 import org.junit.jupiter.api.DisplayName;
@@ -34,6 +35,9 @@ class ProductControllerTest {
 
     @MockBean
     GetListProductService getListProductService;
+
+    @MockBean
+    GetProductService getProductService;
 
     @MockBean
     GetCategoryService getCategoryService;
@@ -94,13 +98,26 @@ class ProductControllerTest {
     }
 
     @Test
-    @DisplayName("GET /products/{id}")
+    @DisplayName("GET /products/{id} - existing")
     void testGetProduct() throws Exception {
         String mockProductId = "id";
+        ProductId productId = new ProductId(mockProductId);
+
+        Product product = new Product(
+                productId,
+                new CategoryId("id"),
+                "name",
+                new Money(1L),
+                List.of(new Image(new ImageId("id"), "url"))
+        );
+
+        given(getProductService.getProduct(any())).willReturn(product);
 
         RequestBuilder requestBuilder = get("/products/%s".formatted(mockProductId));
 
         mockMvc.perform(requestBuilder)
                 .andExpect(status().isOk());
+
+        verify(getProductService).getProduct(any());
     }
 }
