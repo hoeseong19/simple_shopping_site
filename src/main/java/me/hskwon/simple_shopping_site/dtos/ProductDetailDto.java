@@ -11,7 +11,7 @@ public record ProductDetailDto(
         List<ImageDto> images,
         String name,
         Long price,
-//        List<ProductOptionDto> options,
+        List<ProductOptionDto> options,
         String description
 ) {
     public static ProductDetailDto of(Product product, Category category) {
@@ -21,7 +21,7 @@ public record ProductDetailDto(
                 product.images().stream().map(ImageDto::of).toList(),
                 product.name(),
                 product.price().asLong(),
-//                product.options().stream().map(ProductOptionDto::of),
+                product.options().stream().map(ProductOptionDto::of).toList(),
                 product.description()
         );
     }
