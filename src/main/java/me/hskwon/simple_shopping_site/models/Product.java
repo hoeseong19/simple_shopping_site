@@ -31,7 +31,7 @@ public class Product extends BaseEntity {
     private List<Image> images = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "product_options")
+    @JoinColumn(name = "product_id")
     @OrderBy("id")
     private List<ProductOption> options = new ArrayList<>();
 
@@ -69,5 +69,9 @@ public class Product extends BaseEntity {
 
     public Money price() {
         return price;
+    }
+
+    public List<ProductOption> options() {
+        return options;
     }
 }
