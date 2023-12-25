@@ -18,6 +18,9 @@ public class Product extends BaseEntity {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "description")
+    private String description;
+
     @Embedded
     @AttributeOverride(name = "amount", column = @Column(name = "price"))
     private Money price;
@@ -54,6 +57,10 @@ public class Product extends BaseEntity {
 
     public String name() {
         return name;
+    }
+
+    public String description() {
+        return description;
     }
 
     public List<Image> images() {
