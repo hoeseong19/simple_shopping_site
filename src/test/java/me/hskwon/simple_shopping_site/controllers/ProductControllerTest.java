@@ -103,16 +103,20 @@ class ProductControllerTest {
     void testGetExistingProduct() throws Exception {
         String mockProductId = "id";
         ProductId productId = new ProductId(mockProductId);
+        CategoryId categoryId = new CategoryId("id");
+
+        Category category = new Category(categoryId, "name");
 
         Product product = new Product(
                 productId,
-                new CategoryId("id"),
+                categoryId,
                 "name",
                 new Money(1L),
                 List.of(new Image(new ImageId("id"), "url"))
         );
 
         given(getProductService.getProduct(any())).willReturn(product);
+        given(getCategoryService.getCategory(any())).willReturn(category);
 
         RequestBuilder requestBuilder = get("/products/%s".formatted(mockProductId));
 

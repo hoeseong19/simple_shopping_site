@@ -53,6 +53,8 @@ public class ProductController {
     ProductDetailDto getProduct(@PathVariable("id") String id) {
         Product product = getProductService.getProduct(id);
 
-        return ProductDetailDto.of(product);
+        Category category = getCategoryService.getCategory(product.categoryId());
+
+        return ProductDetailDto.of(product, category);
     }
 }
