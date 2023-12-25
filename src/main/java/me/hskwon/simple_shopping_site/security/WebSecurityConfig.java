@@ -16,6 +16,7 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests()
+                .requestMatchers(HttpMethod.POST, "/session").permitAll()
                 .requestMatchers(HttpMethod.GET, "/categories").permitAll()
                 .requestMatchers(HttpMethod.GET, "/products/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/backdoor/**").permitAll()
