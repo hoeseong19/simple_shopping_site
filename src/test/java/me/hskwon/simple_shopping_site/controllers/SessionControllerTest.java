@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 
@@ -24,11 +25,23 @@ class SessionControllerTest extends ControllerTest {
     @Test
     @DisplayName("POST /session")
     void testLogin() throws Exception {
-        RequestBuilder requestBuilder = post("/session");
+        String username = "username";
+        String password = "password";
+
+        String json = """
+                {
+                    "username": "%s",
+                    "password": "%s"
+                }
+                """.formatted(username, password);
+
+        RequestBuilder requestBuilder = post("/session")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(json);
 
         mockMvc.perform(requestBuilder)
                 .andExpect(status().isCreated());
 
-        verify(loginService).login();
+        verify(loginService).login(username, password);
     }
 }
