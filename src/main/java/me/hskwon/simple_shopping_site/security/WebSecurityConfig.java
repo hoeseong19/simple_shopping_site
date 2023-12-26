@@ -18,6 +18,7 @@ public class WebSecurityConfig {
         http.csrf().disable();
 
         http.authorizeHttpRequests()
+                .requestMatchers(HttpMethod.POST, "/users").permitAll()
                 .requestMatchers(HttpMethod.POST, "/session").permitAll()
                 .requestMatchers(HttpMethod.GET, "/categories").permitAll()
                 .requestMatchers(HttpMethod.GET, "/products/**").permitAll()
