@@ -1,6 +1,7 @@
 package me.hskwon.simple_shopping_site.application.auth;
 
 import jakarta.transaction.Transactional;
+import me.hskwon.simple_shopping_site.exceptions.EmailAlreadyExistException;
 import me.hskwon.simple_shopping_site.models.User;
 import me.hskwon.simple_shopping_site.models.UserId;
 import me.hskwon.simple_shopping_site.repositories.UserRepository;
@@ -20,6 +21,10 @@ public class SignupService {
     }
 
     public void signup(String email, String name, String password) {
+        if (userRepository.existsByEmail(email)) {
+            throw new EmailAlreadyExistException();
+        }
+
         UserId userId = UserId.generate();
         String encodedPassword = passwordEncoder.encode(password);
         User newUser = new User(userId, email, name, encodedPassword);
