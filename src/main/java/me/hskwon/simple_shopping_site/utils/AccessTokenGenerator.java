@@ -1,7 +1,9 @@
 package me.hskwon.simple_shopping_site.utils;
 
 import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -24,5 +26,17 @@ public class AccessTokenGenerator {
                 .withClaim("userId", userId)
                 .withExpiresAt(Instant.now().plus(24, ChronoUnit.HOURS))
                 .sign(algorithm);
+    }
+
+    public boolean verify(String accessToken) {
+        try {
+            JWTVerifier verifier = JWT.require(algorithm).build();
+
+            verifier.verify(accessToken);
+
+            return true;
+        } catch (JWTVerificationException e) {
+            return false;
+        }
     }
 }
