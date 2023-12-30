@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import me.hskwon.simple_shopping_site.models.User;
 import me.hskwon.simple_shopping_site.models.UserId;
 import me.hskwon.simple_shopping_site.repositories.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -11,13 +12,17 @@ import org.springframework.stereotype.Service;
 public class SignupService {
     private final UserRepository userRepository;
 
-    public SignupService(UserRepository userRepository) {
+    private final PasswordEncoder passwordEncoder;
+
+    public SignupService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public void signup(String email, String name, String password) {
         UserId userId = UserId.generate();
-        User newUser = new User(userId, email, name, password);
+        String encodedPassword = passwordEncoder.encode(password);
+        User newUser = new User(userId, email, name, encodedPassword);
 
         userRepository.save(newUser);
     }
