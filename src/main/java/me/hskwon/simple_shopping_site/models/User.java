@@ -1,9 +1,6 @@
 package me.hskwon.simple_shopping_site.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "users")
@@ -20,15 +17,20 @@ public class User extends BaseEntity {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "role")
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
     private User() {
         super();
     }
 
-    public User(UserId id, String email, String name, String password) {
+    public User(UserId id, String email, String name, String password, Role role) {
         this.id = id;
         this.email = email;
         this.name = name;
         this.password = password;
+        this.role = role;
     }
 
     public UserId id() {
