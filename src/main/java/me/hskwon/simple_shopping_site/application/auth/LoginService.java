@@ -12,6 +12,6 @@ public class LoginService {
     }
 
     public String login(String username, String password) {
-        return accessTokenGenerator.generate();
+        return accessTokenGenerator.generate("");
     }
 }

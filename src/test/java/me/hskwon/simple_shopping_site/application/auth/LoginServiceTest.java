@@ -30,6 +30,6 @@ class LoginServiceTest {
 
         loginService.login(username, password);
 
-        verify(accessTokenGenerator).generate();
+        verify(accessTokenGenerator).generate("");
     }
 }

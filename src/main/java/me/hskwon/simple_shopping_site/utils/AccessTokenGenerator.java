@@ -5,6 +5,9 @@ import com.auth0.jwt.algorithms.Algorithm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+
 @Component
 public class AccessTokenGenerator {
     private final Algorithm algorithm;
@@ -16,7 +19,10 @@ public class AccessTokenGenerator {
         this.algorithm = Algorithm.HMAC256(secret);
     }
 
-    public String generate() {
-        return JWT.create().sign(algorithm);
+    public String generate(String userId) {
+        return JWT.create()
+                .withClaim("userId", userId)
+                .withExpiresAt(Instant.now().plus(24, ChronoUnit.HOURS))
+                .sign(algorithm);
     }
 }
