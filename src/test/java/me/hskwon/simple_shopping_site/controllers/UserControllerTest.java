@@ -46,7 +46,8 @@ class UserControllerTest extends ControllerTest {
                 .content(json);
 
         mockMvc.perform(requestBuilder)
-                .andExpect(status().isCreated());
+                .andExpect(status().isCreated())
+                .andExpect(content().string(containsString("accessToken")));
 
         verify(signupService).signup(email, name, password);
     }

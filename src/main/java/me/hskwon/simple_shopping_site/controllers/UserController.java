@@ -2,6 +2,7 @@ package me.hskwon.simple_shopping_site.controllers;
 
 import me.hskwon.simple_shopping_site.application.auth.SignupService;
 import me.hskwon.simple_shopping_site.dtos.SignupRequestDto;
+import me.hskwon.simple_shopping_site.dtos.SignupResultDto;
 import me.hskwon.simple_shopping_site.exceptions.EmailAlreadyExistException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -17,16 +18,16 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public String signUp(
+    public SignupResultDto signUp(
             @RequestBody SignupRequestDto dto
     ) {
-        signupService.signup(
+        String accessToken = signupService.signup(
                 dto.email(),
                 dto.name(),
                 dto.password()
         );
 
-        return "";
+        return SignupResultDto.of(accessToken);
     }
 
     @ExceptionHandler(EmailAlreadyExistException.class)
