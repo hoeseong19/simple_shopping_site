@@ -9,15 +9,26 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(securedEnabled = true)
 public class WebSecurityConfig {
+    private final AccessTokenAuthenticationFilter accessTokenAuthenticationFilter;
+
+    public WebSecurityConfig(AccessTokenAuthenticationFilter accessTokenAuthenticationFilter) {
+        this.accessTokenAuthenticationFilter = accessTokenAuthenticationFilter;
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf().disable();
+
+        http.addFilterBefore(
+                accessTokenAuthenticationFilter,
+                BasicAuthenticationFilter.class
+        );
 
         http.authorizeHttpRequests()
                 .requestMatchers(HttpMethod.POST, "/users").permitAll()
