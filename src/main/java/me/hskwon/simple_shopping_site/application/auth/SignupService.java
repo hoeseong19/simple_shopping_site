@@ -6,6 +6,7 @@ import me.hskwon.simple_shopping_site.models.Role;
 import me.hskwon.simple_shopping_site.models.User;
 import me.hskwon.simple_shopping_site.models.UserId;
 import me.hskwon.simple_shopping_site.repositories.UserRepository;
+import me.hskwon.simple_shopping_site.security.AuthUserDao;
 import me.hskwon.simple_shopping_site.utils.AccessTokenGenerator;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,10 +20,17 @@ public class SignupService {
 
     private final AccessTokenGenerator accessTokenGenerator;
 
-    public SignupService(UserRepository userRepository, PasswordEncoder passwordEncoder, AccessTokenGenerator accessTokenGenerator) {
+    private final AuthUserDao authUserDao;
+
+    public SignupService(
+            UserRepository userRepository,
+            PasswordEncoder passwordEncoder,
+            AccessTokenGenerator accessTokenGenerator,
+            AuthUserDao authUserDao) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.accessTokenGenerator = accessTokenGenerator;
+        this.authUserDao = authUserDao;
     }
 
     public String signup(String email, String name, String password) {
@@ -37,6 +45,10 @@ public class SignupService {
 
         userRepository.save(newUser);
 
-        return accessTokenGenerator.generate(userId.toString());
+        String accessToken = accessTokenGenerator.generate(userId.toString());
+
+        authUserDao.addAccessToken(accessToken, userId.toString());
+
+        return accessToken;
     }
 }

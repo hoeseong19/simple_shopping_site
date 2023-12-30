@@ -2,6 +2,7 @@ package me.hskwon.simple_shopping_site.application.auth;
 
 import me.hskwon.simple_shopping_site.exceptions.EmailAlreadyExistException;
 import me.hskwon.simple_shopping_site.repositories.UserRepository;
+import me.hskwon.simple_shopping_site.security.AuthUserDao;
 import me.hskwon.simple_shopping_site.utils.AccessTokenGenerator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -23,13 +24,21 @@ class SignupServiceTest {
 
     private AccessTokenGenerator accessTokenGenerator;
 
+    private AuthUserDao authUserDao;
+
     @BeforeEach
     void setUp() {
         userRepository = mock(UserRepository.class);
         passwordEncoder = mock(PasswordEncoder.class);
         accessTokenGenerator = mock(AccessTokenGenerator.class);
+        authUserDao = mock(AuthUserDao.class);
 
-        signupService = new SignupService(userRepository, passwordEncoder, accessTokenGenerator);
+        signupService = new SignupService(
+                userRepository,
+                passwordEncoder,
+                accessTokenGenerator,
+                authUserDao
+        );
     }
 
     @Test
@@ -48,6 +57,7 @@ class SignupServiceTest {
         verify(passwordEncoder).encode(password);
         verify(userRepository).save(any());
         verify(accessTokenGenerator).generate(any());
+        verify(authUserDao).addAccessToken(any(), any());
     }
 
     @Test
@@ -65,5 +75,6 @@ class SignupServiceTest {
         verify(passwordEncoder, never()).encode(password);
         verify(userRepository, never()).save(any());
         verify(accessTokenGenerator, never()).generate(any());
+        verify(authUserDao, never()).addAccessToken(any(), any());
     }
 }
