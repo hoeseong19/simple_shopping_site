@@ -1,5 +1,6 @@
 package me.hskwon.simple_shopping_site.models;
 
+import io.hypersistence.tsid.TSID;
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 
@@ -18,5 +19,9 @@ public abstract class EntityId {
     @Override
     public String toString() {
         return value;
+    }
+
+    protected static String tsid() {
+        return TSID.Factory.getTsid().toString();
     }
 }
