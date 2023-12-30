@@ -26,4 +26,30 @@ public class AuthUserDao {
                 accessToken, userId
         );
     }
+
+    public Optional<AuthUser> findByAccessToken(String accessToken) {
+        String sql = """
+                SELECT u.id, u.role
+                FROM users u JOIN access_tokens at2 on u.id = at2.user_id
+                WHERE at2.value = ?
+                """;
+
+        return jdbcTemplate.query(
+                sql,
+                resultSet -> {
+                    if (!resultSet.next()) {
+                        return Optional.empty();
+                    }
+
+                    AuthUser authUser = AuthUser.authenticated(
+                            resultSet.getString("id"),
+                            resultSet.getString("role"),
+                            accessToken
+                    );
+
+                    return Optional.of(authUser);
+                },
+                accessToken
+        );
+    }
 }
