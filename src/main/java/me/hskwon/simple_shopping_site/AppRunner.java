@@ -17,5 +17,18 @@ public class AppRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        transactionTemplate.execute(status -> {
+            String sql = """
+                    CREATE TABLE IF NOT EXISTS access_tokens (
+                        value varchar(255) PRIMARY KEY,
+                        user_id varchar(255) NOT NULL,
+                        created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+                    )
+                    """;
+
+            jdbcTemplate.update(sql);
+
+            return null;
+        });
     }
 }
