@@ -2,6 +2,7 @@ package me.hskwon.simple_shopping_site.controllers;
 
 import me.hskwon.simple_shopping_site.application.auth.SignupService;
 import me.hskwon.simple_shopping_site.dtos.SignupRequestDto;
+import me.hskwon.simple_shopping_site.exceptions.EmailAlreadyExistException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,5 +27,11 @@ public class UserController {
         );
 
         return "";
+    }
+
+    @ExceptionHandler(EmailAlreadyExistException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String emailAlreadyExist() {
+        return "Email Already Exists";
     }
 }
