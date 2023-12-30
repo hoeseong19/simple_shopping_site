@@ -6,6 +6,7 @@ import me.hskwon.simple_shopping_site.models.Role;
 import me.hskwon.simple_shopping_site.models.User;
 import me.hskwon.simple_shopping_site.models.UserId;
 import me.hskwon.simple_shopping_site.repositories.UserRepository;
+import me.hskwon.simple_shopping_site.utils.AccessTokenGenerator;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,12 +17,15 @@ public class SignupService {
 
     private final PasswordEncoder passwordEncoder;
 
-    public SignupService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    private final AccessTokenGenerator accessTokenGenerator;
+
+    public SignupService(UserRepository userRepository, PasswordEncoder passwordEncoder, AccessTokenGenerator accessTokenGenerator) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.accessTokenGenerator = accessTokenGenerator;
     }
 
-    public void signup(String email, String name, String password) {
+    public String signup(String email, String name, String password) {
         if (userRepository.existsByEmail(email)) {
             throw new EmailAlreadyExistException();
         }
@@ -32,5 +36,7 @@ public class SignupService {
         User newUser = new User(userId, email, name, encodedPassword, role);
 
         userRepository.save(newUser);
+
+        return accessTokenGenerator.generate(userId.toString());
     }
 }
