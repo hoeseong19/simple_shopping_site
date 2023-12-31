@@ -12,7 +12,7 @@ class CartTest {
 
     @BeforeEach
     void setUp() {
-        cart = new Cart(new UserId("userId"));
+        cart = new Cart(CartId.generate(), new UserId("userId"));
     }
 
     @Test
