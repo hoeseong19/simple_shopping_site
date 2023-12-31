@@ -1,7 +1,10 @@
 package me.hskwon.simple_shopping_site.controllers;
 
 import me.hskwon.simple_shopping_site.application.auth.SignupService;
+import me.hskwon.simple_shopping_site.application.users.GetUserService;
 import me.hskwon.simple_shopping_site.exceptions.EmailAlreadyExistException;
+import me.hskwon.simple_shopping_site.models.User;
+import me.hskwon.simple_shopping_site.models.UserId;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +14,13 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 
+import static me.hskwon.simple_shopping_site.models.Role.ROLE_USER;
 import static org.hamcrest.Matchers.containsString;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -26,6 +33,9 @@ class UserControllerTest extends ControllerTest {
 
     @MockBean
     SignupService signupService;
+
+    @MockBean
+    GetUserService getUserService;
 
     @Test
     @DisplayName("POST /users - with valid info")
@@ -79,5 +89,27 @@ class UserControllerTest extends ControllerTest {
                 .andExpect(content().string(containsString("Email Already Exists")));
 
         verify(signupService).signup(email, name, password);
+    }
+
+    @Test
+    @DisplayName("GET /users/me")
+    void testMe() throws Exception {
+        UserId userId = new UserId(USER_ID);
+        User user = new User(
+                userId,
+                "email",
+                "name",
+                "password",
+                ROLE_USER
+        );
+
+        given(getUserService.getUser(any()))
+                .willReturn(user);
+
+        RequestBuilder requestBuilder = get("/users/me")
+                .header("Authorization", "Bearer %s".formatted(accessToken));
+
+        mockMvc.perform(requestBuilder)
+                .andExpect(status().isOk());
     }
 }
