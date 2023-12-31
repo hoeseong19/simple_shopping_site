@@ -57,6 +57,7 @@ class LoginServiceTest {
         assertThat(generatedAccessToken).isEqualTo(accessToken);
 
         verify(accessTokenGenerator).generate(userId);
+        verify(authUserDao).addAccessToken(accessToken, userId);
     }
 
     @Test

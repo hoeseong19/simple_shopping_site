@@ -18,7 +18,13 @@ public class LoginService {
 
     public String login(String email, String password) {
         return authUserDao.findByEmail(email)
-                .map(authUser -> accessTokenGenerator.generate(authUser.id()))
+                .map(authUser -> {
+                    String accessToken = accessTokenGenerator.generate(authUser.id());
+
+                    authUserDao.addAccessToken(accessToken, authUser.id());
+
+                    return accessToken;
+                })
                 .orElseThrow(() -> new BadCredentialsException(""));
     }
 }
