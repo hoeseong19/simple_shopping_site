@@ -27,12 +27,12 @@ class SessionControllerTest extends ControllerTest {
     @Test
     @DisplayName("POST /session")
     void testLogin() throws Exception {
-        String username = "username";
+        String username = "email";
         String password = "password";
 
         String json = """
                 {
-                    "username": "%s",
+                    "email": "%s",
                     "password": "%s"
                 }
                 """.formatted(username, password);

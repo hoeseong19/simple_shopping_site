@@ -15,7 +15,7 @@ public class LoginService {
         this.accessTokenGenerator = accessTokenGenerator;
     }
 
-    public String login(String username, String password) {
+    public String login(String email, String password) {
         return accessTokenGenerator.generate("");
     }
 }

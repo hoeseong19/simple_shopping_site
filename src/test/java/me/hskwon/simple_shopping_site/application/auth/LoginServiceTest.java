@@ -27,10 +27,10 @@ class LoginServiceTest {
     @Test
     @DisplayName("login")
     void testLogin() {
-        String username = "username";
+        String email = "a@b.c";
         String password = "password";
 
-        loginService.login(username, password);
+        loginService.login(email, password);
 
         verify(accessTokenGenerator).generate("");
     }

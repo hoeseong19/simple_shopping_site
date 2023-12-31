@@ -19,7 +19,7 @@ public class SessionController {
     @ResponseStatus(HttpStatus.CREATED)
     public LoginResultDto login(@RequestBody LoginRequestDto dto) {
         String accessToken = loginService.login(
-                dto.username(),
+                dto.email(),
                 dto.password()
         );
 
