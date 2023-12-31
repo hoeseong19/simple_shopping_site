@@ -39,4 +39,11 @@ public class Cart extends BaseEntity {
     public int itemSize() {
         return items.size();
     }
+
+    public void addProduct(ProductId productId) {
+        CartLineItemId cartLineItemId = CartLineItemId.generate();
+        CartLineItem item = new CartLineItem(cartLineItemId, productId);
+
+        items.add(item);
+    }
 }
