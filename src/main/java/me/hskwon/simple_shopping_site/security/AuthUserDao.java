@@ -69,7 +69,7 @@ public class AuthUserDao {
 
                     AuthUser authUser = AuthUser.of(
                             resultSet.getString("id"),
-                            resultSet.getString("email"),
+                            email,
                             resultSet.getString("password"),
                             resultSet.getString("role")
                     );
