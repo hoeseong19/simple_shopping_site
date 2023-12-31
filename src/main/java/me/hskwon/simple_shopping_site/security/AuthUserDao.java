@@ -52,4 +52,30 @@ public class AuthUserDao {
                 accessToken
         );
     }
+
+    public Optional<AuthUser> findByEmail(String email) {
+        String sql = """
+                SELECT id, password, role
+                FROM users
+                WHERE email = ?;
+                """;
+
+        return jdbcTemplate.query(
+                sql,
+                resultSet -> {
+                    if (!resultSet.next()) {
+                        return Optional.empty();
+                    }
+
+                    AuthUser authUser = AuthUser.of(
+                            resultSet.getString("id"),
+                            resultSet.getString("email"),
+                            resultSet.getString("password"),
+                            resultSet.getString("role")
+                    );
+
+                    return Optional.of(authUser);
+                },
+                email);
+    }
 }
