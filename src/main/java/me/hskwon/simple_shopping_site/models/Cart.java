@@ -11,6 +11,10 @@ public class Cart extends BaseEntity {
     @EmbeddedId
     private CartId id;
 
+    @Embedded
+    @AttributeOverride(name = "value", column = @Column(name = "user_id"))
+    private UserId userId;
+
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "cart_id")
     @OrderBy("id")
