@@ -28,6 +28,10 @@ public class Cart extends BaseEntity {
         this.id = id;
     }
 
+    public Cart(UserId userId) {
+        this.userId = userId;
+    }
+
     public CartId id() {
         return id;
     }
