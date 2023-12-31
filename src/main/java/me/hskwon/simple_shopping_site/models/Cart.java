@@ -35,4 +35,8 @@ public class Cart extends BaseEntity {
     public CartId id() {
         return id;
     }
+
+    public int itemSize() {
+        return items.size();
+    }
 }
