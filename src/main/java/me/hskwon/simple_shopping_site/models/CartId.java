@@ -11,4 +11,8 @@ public class CartId extends EntityId {
     public CartId(String value) {
         super(value);
     }
+
+    public static CartId generate() {
+        return new CartId(tsid());
+    }
 }
