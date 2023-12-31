@@ -2,6 +2,7 @@ package me.hskwon.simple_shopping_site.application.auth;
 
 import me.hskwon.simple_shopping_site.security.AuthUserDao;
 import me.hskwon.simple_shopping_site.utils.AccessTokenGenerator;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,6 +17,8 @@ public class LoginService {
     }
 
     public String login(String email, String password) {
-        return accessTokenGenerator.generate("");
+        return authUserDao.findByEmail(email)
+                .map(authUser -> accessTokenGenerator.generate(authUser.id()))
+                .orElseThrow(() -> new BadCredentialsException(""));
     }
 }
