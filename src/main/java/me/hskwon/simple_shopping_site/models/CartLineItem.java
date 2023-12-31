@@ -1,14 +1,16 @@
 package me.hskwon.simple_shopping_site.models;
 
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "cart_line_items")
 public class CartLineItem extends BaseEntity {
     @EmbeddedId
     private CartLineItemId id;
+
+    @Embedded
+    @AttributeOverride(name = "value", column = @Column(name = "product_id"))
+    private ProductId productId;
 
     private CartLineItem() {
         super();
@@ -20,5 +22,9 @@ public class CartLineItem extends BaseEntity {
 
     public CartLineItemId id() {
         return id;
+    }
+
+    public ProductId productId() {
+        return productId;
     }
 }
