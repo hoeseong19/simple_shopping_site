@@ -8,6 +8,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
@@ -21,14 +22,16 @@ import static org.mockito.Mockito.*;
 class LoginServiceTest {
     private LoginService loginService;
     private AuthUserDao authUserDao;
+    private PasswordEncoder passwordEncoder;
     private AccessTokenGenerator accessTokenGenerator;
 
     @BeforeEach
     void setUp() {
         authUserDao = mock(AuthUserDao.class);
+        passwordEncoder = mock(PasswordEncoder.class);
         accessTokenGenerator = mock(AccessTokenGenerator.class);
 
-        loginService = new LoginService(authUserDao, accessTokenGenerator);
+        loginService = new LoginService(authUserDao, passwordEncoder, accessTokenGenerator);
     }
 
     @Test
@@ -36,28 +39,33 @@ class LoginServiceTest {
     void testLoginWithValidEmail() {
         String userId = "userId";
         String email = "a@b.c";
-        String password = "password";
+        String encodedPassword = "encodedPassword";
         String role = ROLE_USER.toString();
         String accessToken = "accessToken";
         AuthUser authUser = AuthUser.of(
                 userId,
                 email,
-                password,
+                encodedPassword,
                 role
         );
+
+        String rawPassword = "rawPassword";
 
         given(authUserDao.findByEmail(email))
                 .willReturn(Optional.of(authUser));
 
+        given(passwordEncoder.matches(rawPassword, encodedPassword))
+                .willReturn(true);
+
         given(accessTokenGenerator.generate(userId))
                 .willReturn(accessToken);
 
-        String generatedAccessToken = loginService.login(email, password);
+        String generatedAccessToken = loginService.login(email, rawPassword);
 
         assertThat(generatedAccessToken).isEqualTo(accessToken);
 
-        verify(accessTokenGenerator).generate(userId);
         verify(authUserDao).addAccessToken(accessToken, userId);
+        verify(accessTokenGenerator).generate(userId);
     }
 
     @Test
@@ -70,6 +78,34 @@ class LoginServiceTest {
                 .willReturn(Optional.empty());
 
         assertThatThrownBy(() -> loginService.login(email, password))
+                .isInstanceOf(BadCredentialsException.class);
+
+        verify(accessTokenGenerator, never()).generate(any());
+    }
+
+    @Test
+    @DisplayName("login - with invalid password")
+    void testLoginWithInvalidPassword() {
+        String userId = "userId";
+        String email = "a@b.c";
+        String encodedPassword = "encodedPassword";
+        String role = ROLE_USER.toString();
+        AuthUser authUser = AuthUser.of(
+                userId,
+                email,
+                encodedPassword,
+                role
+        );
+
+        String rawPassword = "rawPassword";
+
+        given(authUserDao.findByEmail(email))
+                .willReturn(Optional.of(authUser));
+
+        given(passwordEncoder.matches(rawPassword, encodedPassword))
+                .willReturn(false);
+
+        assertThatThrownBy(() -> loginService.login(email, encodedPassword))
                 .isInstanceOf(BadCredentialsException.class);
 
         verify(accessTokenGenerator, never()).generate(any());
