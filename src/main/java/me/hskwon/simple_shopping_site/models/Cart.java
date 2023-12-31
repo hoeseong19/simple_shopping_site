@@ -1,14 +1,20 @@
 package me.hskwon.simple_shopping_site.models;
 
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "carts")
 public class Cart extends BaseEntity {
     @EmbeddedId
     private CartId id;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "cart_id")
+    @OrderBy("id")
+    private List<CartLineItem> items = new ArrayList<>();
 
     private Cart() {
         super();
