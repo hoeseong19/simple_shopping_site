@@ -16,8 +16,9 @@ public class CartLineItem extends BaseEntity {
         super();
     }
 
-    public CartLineItem(CartLineItemId id) {
+    public CartLineItem(CartLineItemId id, ProductId productId) {
         this.id = id;
+        this.productId = productId;
     }
 
     public CartLineItemId id() {
