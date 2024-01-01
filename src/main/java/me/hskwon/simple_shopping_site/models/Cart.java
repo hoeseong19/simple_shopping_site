@@ -44,13 +44,15 @@ public class Cart extends BaseEntity {
 
     public void addProduct(
             ProductId productId,
-            Set<CartLineItemOption> options
+            Set<CartLineItemOption> options,
+            int quantity
     ) {
         CartLineItemId cartLineItemId = CartLineItemId.generate();
         CartLineItem item = new CartLineItem(
                 cartLineItemId,
                 productId,
-                options
+                options,
+                quantity
         );
 
         items.add(item);

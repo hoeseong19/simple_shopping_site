@@ -41,11 +41,17 @@ class AddProductToCartServiceTest {
         Product product = Fixtures.product();
         UserId userId = new UserId("userId");
         Set<CartLineItemOption> options = Fixtures.options();
+        int quantity = 2;
 
         given(productRepository.findById(product.id()))
                 .willReturn(Optional.of(product));
 
-        addProductToCartService.addProduct(product.id(), userId, options);
+        addProductToCartService.addProduct(
+                product.id(),
+                userId,
+                options,
+                quantity
+        );
 
         verify(cartRepository).save(any());
     }
@@ -56,11 +62,19 @@ class AddProductToCartServiceTest {
         Product product = Fixtures.product();
         UserId userId = new UserId("userId");
         Set<CartLineItemOption> options = Fixtures.options();
+        int quantity = 2;
 
         given(productRepository.findById(product.id()))
                 .willReturn(Optional.empty());
 
-        assertThatThrownBy(() -> addProductToCartService.addProduct(product.id(), userId, options))
+        assertThatThrownBy(
+                () -> addProductToCartService.addProduct(
+                        product.id(),
+                        userId,
+                        options,
+                        quantity
+                )
+        )
                 .isInstanceOf(NoSuchElementException.class);
 
         verify(cartRepository, never()).save(any());

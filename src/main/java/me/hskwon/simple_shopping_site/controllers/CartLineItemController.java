@@ -1,5 +1,6 @@
 package me.hskwon.simple_shopping_site.controllers;
 
+import jakarta.validation.Valid;
 import me.hskwon.simple_shopping_site.application.cart.AddProductToCartService;
 import me.hskwon.simple_shopping_site.dtos.AddProductToCartDto;
 import me.hskwon.simple_shopping_site.models.*;
@@ -24,9 +25,12 @@ public class CartLineItemController {
     @ResponseStatus(HttpStatus.CREATED)
     public void createCartLineItem(
             Authentication authentication,
-            @RequestBody AddProductToCartDto dto
+            @Valid @RequestBody AddProductToCartDto dto
     ) {
         AuthUser authUser = (AuthUser) authentication.getPrincipal();
+
+        ProductId productId = new ProductId(dto.productId());
+        UserId userId = new UserId(authUser.id());
 
         Set<CartLineItemOption> options = dto.options().stream()
                 .map(option ->
@@ -37,10 +41,13 @@ public class CartLineItemController {
                 )
                 .collect(Collectors.toSet());
 
+        int quantity = dto.quantity();
+
         addProductToCartService.addProduct(
-                new ProductId(dto.productId()),
-                new UserId(authUser.id()),
-                options
+                productId,
+                userId,
+                options,
+                quantity
         );
     }
 }

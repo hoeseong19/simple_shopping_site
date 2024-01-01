@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -32,6 +33,7 @@ class CartLineItemControllerTest extends ControllerTest {
         ProductId productId = new ProductId("productId");
         ProductOptionId optionId = new ProductOptionId("optionId");
         ProductOptionItemId optionItemId = new ProductOptionItemId("optionItemId");
+        int quantity = 2;
 
         String json = """
                 {
@@ -41,13 +43,15 @@ class CartLineItemControllerTest extends ControllerTest {
                              "id": "%s",
                              "itemId": "%s"
                          }
-                    ]
+                    ],
+                    "quantity": %d
                 }
                 """
                 .formatted(
                         productId.toString(),
                         optionId.toString(),
-                        optionItemId.toString()
+                        optionItemId.toString(),
+                        quantity
                 );
 
         RequestBuilder requestBuilder = post("/cart/line-items")
@@ -58,6 +62,6 @@ class CartLineItemControllerTest extends ControllerTest {
         mockMvc.perform(requestBuilder)
                 .andExpect(status().isCreated());
 
-        verify(addProductToCartService).addProduct(any(), any(), any());
+        verify(addProductToCartService).addProduct(any(), any(), any(), eq(quantity));
     }
 }

@@ -22,8 +22,9 @@ class CartTest {
     void testAddProduct() {
         Product product = Fixtures.product();
         Set<CartLineItemOption> options = Fixtures.options();
+        int quantity = 2;
 
-        cart.addProduct(product.id(), options);
+        cart.addProduct(product.id(), options, quantity);
 
         assertThat(cart.itemSize()).isEqualTo(1);
     }

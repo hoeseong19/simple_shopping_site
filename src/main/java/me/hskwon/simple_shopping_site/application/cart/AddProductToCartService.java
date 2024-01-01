@@ -26,15 +26,16 @@ public class AddProductToCartService {
     public void addProduct(
             ProductId productId,
             UserId userId,
-            Set<CartLineItemOption> options
+            Set<CartLineItemOption> options,
+            int quantity
     ) {
         Cart cart = cartRepository.findByUserId(userId)
                 .orElse(new Cart(CartId.generate(), userId));
 
-        productRepository.findById(productId)
+        Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new NoSuchElementException(""));
 
-        cart.addProduct(productId, options);
+        cart.addProduct(product.id(), options, quantity);
 
         cartRepository.save(cart);
     }
