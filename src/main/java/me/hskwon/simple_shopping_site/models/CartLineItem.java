@@ -22,14 +22,18 @@ public class CartLineItem extends BaseEntity {
     )
     private Set<CartLineItemOption> options = new HashSet<>();
 
+    @Column(name = "quantity", nullable = false)
+    private int quantity = 0;
+
     private CartLineItem() {
         super();
     }
 
-    public CartLineItem(CartLineItemId id, ProductId productId, Set<CartLineItemOption> options) {
+    public CartLineItem(CartLineItemId id, ProductId productId, Set<CartLineItemOption> options, int quantity) {
         this.id = id;
         this.productId = productId;
         this.options = options;
+        this.quantity = quantity;
     }
 
     public CartLineItemId id() {
@@ -38,5 +42,9 @@ public class CartLineItem extends BaseEntity {
 
     public ProductId productId() {
         return productId;
+    }
+
+    public int quantity() {
+        return quantity;
     }
 }
