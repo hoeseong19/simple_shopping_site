@@ -5,6 +5,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.Set;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 class CartTest {
@@ -19,8 +21,9 @@ class CartTest {
     @DisplayName("addProduct")
     void testAddProduct() {
         Product product = Fixtures.product();
+        Set<CartLineItemOption> options = Fixtures.options();
 
-        cart.addProduct(product.id());
+        cart.addProduct(product.id(), options);
 
         assertThat(cart.itemSize()).isEqualTo(1);
     }

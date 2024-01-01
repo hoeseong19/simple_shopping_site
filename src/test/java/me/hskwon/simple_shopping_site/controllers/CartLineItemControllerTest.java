@@ -2,6 +2,8 @@ package me.hskwon.simple_shopping_site.controllers;
 
 import me.hskwon.simple_shopping_site.application.cart.AddProductToCartService;
 import me.hskwon.simple_shopping_site.models.ProductId;
+import me.hskwon.simple_shopping_site.models.ProductOptionId;
+import me.hskwon.simple_shopping_site.models.ProductOptionItemId;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,12 +30,25 @@ class CartLineItemControllerTest extends ControllerTest {
     @DisplayName("POST /cart/line-items")
     void testAddProduct() throws Exception {
         ProductId productId = new ProductId("productId");
+        ProductOptionId optionId = new ProductOptionId("optionId");
+        ProductOptionItemId optionItemId = new ProductOptionItemId("optionItemId");
 
         String json = """
                 {
-                    "productId": "%s"
+                    "productId": "%s",
+                    "options": [
+                        {
+                             "id": "%s",
+                             "itemId": "%s"
+                         }
+                    ]
                 }
-                """.formatted(productId.toString());
+                """
+                .formatted(
+                        productId.toString(),
+                        optionId.toString(),
+                        optionItemId.toString()
+                );
 
         RequestBuilder requestBuilder = post("/cart/line-items")
                 .header("Authorization", "Bearer %s".formatted(accessToken))
@@ -43,6 +58,6 @@ class CartLineItemControllerTest extends ControllerTest {
         mockMvc.perform(requestBuilder)
                 .andExpect(status().isCreated());
 
-        verify(addProductToCartService).addProduct(any(), any());
+        verify(addProductToCartService).addProduct(any(), any(), any());
     }
 }

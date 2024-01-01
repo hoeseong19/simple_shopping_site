@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "carts")
@@ -41,9 +42,16 @@ public class Cart extends BaseEntity {
         return items.size();
     }
 
-    public void addProduct(ProductId productId) {
+    public void addProduct(
+            ProductId productId,
+            Set<CartLineItemOption> options
+    ) {
         CartLineItemId cartLineItemId = CartLineItemId.generate();
-        CartLineItem item = new CartLineItem(cartLineItemId, productId);
+        CartLineItem item = new CartLineItem(
+                cartLineItemId,
+                productId,
+                options
+        );
 
         items.add(item);
     }
