@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 
@@ -24,8 +25,26 @@ class OrderControllerTest extends ControllerTest {
     @Test
     @DisplayName("POST /orders")
     void testCreateOrder() throws Exception {
+        String json = """
+                {
+                    "receiver": {
+                        "name": "홍길동",
+                        "address1": "서울특별시 성동구 상원12길 34",
+                        "address2": "ㅇㅇㅇ호",
+                        "postalCode": "04790",
+                        "phoneNumber": "01012345678"
+                    },
+                    "payment": {
+                        "merchantId": "ORDER-20230101-00000001",
+                        "transactionId": "123456789012"
+                    }
+                }
+                """;
+
         RequestBuilder requestBuilder = post("/orders")
-                .header("Authorization", "Bearer %s".formatted(accessToken));
+                .header("Authorization", "Bearer %s".formatted(accessToken))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json);
 
         mockMvc.perform(requestBuilder)
                 .andExpect(status().isCreated());
