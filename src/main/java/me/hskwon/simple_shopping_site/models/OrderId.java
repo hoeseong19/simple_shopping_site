@@ -10,4 +10,8 @@ public class OrderId extends EntityId {
     public OrderId(String value) {
         super(value);
     }
+
+    public static OrderId generate() {
+        return new OrderId(tsid());
+    }
 }
