@@ -37,7 +37,11 @@ public class ProductOption extends BaseEntity {
         return name;
     }
 
-    public List<ProductOptionItem> items() {
-        return items;
+    public int itemSize() {
+        return items.size();
+    }
+
+    public ProductOptionItem item(int index) {
+        return items.get(index);
     }
 }
