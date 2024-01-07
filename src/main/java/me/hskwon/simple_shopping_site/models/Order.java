@@ -1,9 +1,6 @@
 package me.hskwon.simple_shopping_site.models;
 
-import jakarta.persistence.AttributeOverride;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "orders")
@@ -15,8 +12,16 @@ public class Order extends BaseEntity<OrderId> {
     @AttributeOverride(name = "value", column = @Column(name = "user_id"))
     private UserId userId;
 
-    public Order(OrderId id, UserId userId) {
+    @Embedded
+    private Receiver receiver;
+
+    @Embedded
+    private Payment payment;
+
+    public Order(OrderId id, UserId userId, Receiver receiver, Payment payment) {
         super(id);
         this.userId = userId;
+        this.receiver = receiver;
+        this.payment = payment;
     }
 }
