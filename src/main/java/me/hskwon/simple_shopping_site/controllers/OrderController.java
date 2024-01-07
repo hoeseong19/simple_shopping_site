@@ -19,5 +19,6 @@ public class OrderController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void createOrder() {
+        createOrderService.createOrder();
     }
 }
