@@ -34,6 +34,10 @@ public class GetCartService {
                 })
                 .toList();
 
-        return new CartDto(listItemDto, 0L);
+        long totalPrice = listItemDto.stream()
+                .mapToLong(CartDto.LineItemDto::totalPrice)
+                .sum();
+
+        return new CartDto(listItemDto, totalPrice);
     }
 }
