@@ -1,5 +1,6 @@
 package me.hskwon.simple_shopping_site.application.orders;
 
+import me.hskwon.simple_shopping_site.models.UserId;
 import me.hskwon.simple_shopping_site.repositories.OrderRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,7 +21,9 @@ class CreateOrderServiceTest {
 
     @Test
     void testCreateOrder() {
-        createOrderService.createOrder();
+        UserId userId = new UserId("userId");
+
+        createOrderService.createOrder(userId);
 
         verify(orderRepository).save(any());
     }

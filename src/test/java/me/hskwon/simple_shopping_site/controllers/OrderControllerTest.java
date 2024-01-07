@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -49,6 +50,6 @@ class OrderControllerTest extends ControllerTest {
         mockMvc.perform(requestBuilder)
                 .andExpect(status().isCreated());
 
-        verify(createOrderService).createOrder();
+        verify(createOrderService).createOrder(any());
     }
 }

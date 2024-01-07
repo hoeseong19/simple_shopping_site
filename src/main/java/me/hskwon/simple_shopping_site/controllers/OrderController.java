@@ -2,6 +2,8 @@ package me.hskwon.simple_shopping_site.controllers;
 
 import me.hskwon.simple_shopping_site.application.orders.CreateOrderService;
 import me.hskwon.simple_shopping_site.dtos.CreateOrderDto;
+import me.hskwon.simple_shopping_site.models.UserId;
+import me.hskwon.simple_shopping_site.security.AuthUser;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +23,10 @@ public class OrderController {
             Authentication authentication,
             @RequestBody CreateOrderDto dto
     ) {
-        createOrderService.createOrder();
+        AuthUser authUser = (AuthUser) authentication.getPrincipal();
+
+        UserId userId = new UserId(authUser.id());
+
+        createOrderService.createOrder(userId);
     }
 }
