@@ -67,11 +67,22 @@ public class Product extends BaseEntity {
         return images;
     }
 
+    public Image image(int idx) {
+        return images.get(idx);
+    }
+
     public Money price() {
         return price;
     }
 
     public List<ProductOption> options() {
         return options;
+    }
+
+    public ProductOption optionById(ProductOptionId id) {
+        return options.stream()
+                .filter(option -> option.id().toString().equals(id.toString()))
+                .findFirst()
+                .orElseThrow();
     }
 }
