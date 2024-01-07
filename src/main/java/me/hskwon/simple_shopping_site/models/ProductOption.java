@@ -44,4 +44,11 @@ public class ProductOption extends BaseEntity {
     public ProductOptionItem item(int index) {
         return items.get(index);
     }
+
+    public ProductOptionItem itemById(ProductOptionItemId id) {
+        return items.stream()
+                .filter(item -> item.id().toString().equals(id.toString()))
+                .findFirst()
+                .orElseThrow();
+    }
 }
