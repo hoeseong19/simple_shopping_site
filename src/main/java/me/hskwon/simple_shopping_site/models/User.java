@@ -4,10 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "users")
-public class User extends BaseEntity {
-    @EmbeddedId
-    private UserId id;
-
+public class User extends BaseEntity<UserId> {
     @Column(name = "email")
     private String email;
 

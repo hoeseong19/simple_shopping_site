@@ -1,15 +1,12 @@
 package me.hskwon.simple_shopping_site.models;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "images")
-public class Image extends BaseEntity {
-    @EmbeddedId
-    private ImageId id;
+public class Image extends BaseEntity<ImageId> {
 
     @Column(name = "url")
     private String url;

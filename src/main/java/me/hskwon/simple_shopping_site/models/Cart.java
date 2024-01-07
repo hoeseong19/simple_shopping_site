@@ -8,10 +8,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "carts")
-public class Cart extends BaseEntity {
-    @EmbeddedId
-    private CartId id;
-
+public class Cart extends BaseEntity<CartId> {
     @Embedded
     @AttributeOverride(name = "value", column = @Column(name = "user_id"))
     private UserId userId;

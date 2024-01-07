@@ -7,10 +7,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "products")
-public class Product extends BaseEntity {
-    @EmbeddedId
-    private ProductId id;
-
+public class Product extends BaseEntity<ProductId> {
     @Embedded
     @AttributeOverride(name = "value", column = @Column(name = "category_id"))
     private CategoryId categoryId;

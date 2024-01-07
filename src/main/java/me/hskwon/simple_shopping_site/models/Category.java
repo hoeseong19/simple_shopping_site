@@ -1,16 +1,12 @@
 package me.hskwon.simple_shopping_site.models;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "categories")
-public class Category extends BaseEntity {
-    @EmbeddedId
-    private CategoryId id;
-
+public class Category extends BaseEntity<CategoryId> {
     @Column(name = "name")
     private String name;
 

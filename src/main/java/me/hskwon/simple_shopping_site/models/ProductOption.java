@@ -7,10 +7,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "product_options")
-public class ProductOption extends BaseEntity {
-    @EmbeddedId
-    private ProductOptionId id;
-
+public class ProductOption extends BaseEntity<ProductOptionId> {
     @Column(name = "name")
     private String name;
 
