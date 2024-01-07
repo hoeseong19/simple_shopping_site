@@ -1,6 +1,6 @@
 package me.hskwon.simple_shopping_site.application.cart;
 
-import me.hskwon.simple_shopping_site.models.Cart;
+import me.hskwon.simple_shopping_site.dtos.CartDto;
 import me.hskwon.simple_shopping_site.models.UserId;
 import me.hskwon.simple_shopping_site.repositories.CartRepository;
 import me.hskwon.simple_shopping_site.repositories.ProductRepository;
@@ -28,9 +28,9 @@ class GetCartServiceTest {
     void testGetCart() {
         UserId userId = new UserId("userId");
 
-        Cart cart = getCartService.getCart(userId);
+        CartDto dto = getCartService.getCartDto(userId);
 
-        assertThat(cart).isNotNull();
+        assertThat(dto).isNotNull();
 
         verify(cartRepository).findByUserId(userId);
     }
