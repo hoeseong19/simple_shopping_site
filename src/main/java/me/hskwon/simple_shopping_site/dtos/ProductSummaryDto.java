@@ -15,7 +15,7 @@ public record ProductSummaryDto(
                 product.id().toString(),
                 product.name(),
                 product.price().asLong(),
-                ImageDto.of(product.images().get(0)),
+                ImageDto.of(product.image(0)),
                 CategoryDto.of(category)
         );
     }
