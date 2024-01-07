@@ -31,6 +31,6 @@ class CartControllerTest extends ControllerTest {
         mockMvc.perform(requestBuilder)
                 .andExpect(status().isOk());
 
-        verify(getCartService).getCart(any());
+        verify(getCartService).getCartDto(any());
     }
 }

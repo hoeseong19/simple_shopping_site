@@ -1,7 +1,7 @@
 package me.hskwon.simple_shopping_site.controllers;
 
 import me.hskwon.simple_shopping_site.application.cart.GetCartService;
-import me.hskwon.simple_shopping_site.models.Cart;
+import me.hskwon.simple_shopping_site.dtos.CartDto;
 import me.hskwon.simple_shopping_site.models.UserId;
 import me.hskwon.simple_shopping_site.security.AuthUser;
 import org.springframework.security.core.Authentication;
@@ -19,13 +19,11 @@ public class CartController {
     }
 
     @GetMapping
-    public String getCart(
+    public CartDto getCart(
             Authentication authentication
     ) {
         AuthUser authUser = (AuthUser) authentication.getPrincipal();
 
-        Cart cart = getCartService.getCart(new UserId(authUser.id()));
-
-        return "";
+        return getCartService.getCartDto(new UserId(authUser.id()));
     }
 }
