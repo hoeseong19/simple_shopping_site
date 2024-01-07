@@ -38,6 +38,10 @@ public class Cart extends BaseEntity {
         return id;
     }
 
+    public CartLineItem item(int index) {
+        return items.get(index);
+    }
+
     public int itemSize() {
         return items.size();
     }
