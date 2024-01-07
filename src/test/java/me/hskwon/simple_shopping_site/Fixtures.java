@@ -27,4 +27,25 @@ public class Fixtures {
             ));
         }};
     }
+
+    public static Receiver receiver() {
+        return new Receiver(
+                "name",
+                new Address(
+                        "address1",
+                        "address2",
+                        new PostalCode("postalCode")
+                ),
+                new PhoneNumber(
+                        "phoneNumber"
+                )
+        );
+    }
+
+    public static Payment payment() {
+        return new Payment(
+                "merchantId",
+                "transactionId"
+        );
+    }
 }
