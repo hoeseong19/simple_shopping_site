@@ -1,5 +1,8 @@
 package me.hskwon.simple_shopping_site.application.orders;
 
+import me.hskwon.simple_shopping_site.Fixtures;
+import me.hskwon.simple_shopping_site.models.Payment;
+import me.hskwon.simple_shopping_site.models.Receiver;
 import me.hskwon.simple_shopping_site.models.UserId;
 import me.hskwon.simple_shopping_site.repositories.OrderRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,7 +26,10 @@ class CreateOrderServiceTest {
     void testCreateOrder() {
         UserId userId = new UserId("userId");
 
-        createOrderService.createOrder(userId);
+        Receiver receiver = Fixtures.receiver();
+        Payment payment = Fixtures.payment();
+
+        createOrderService.createOrder(userId, receiver, payment);
 
         verify(orderRepository).save(any());
     }

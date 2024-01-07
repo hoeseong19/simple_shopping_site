@@ -1,6 +1,9 @@
 package me.hskwon.simple_shopping_site.controllers;
 
+import me.hskwon.simple_shopping_site.Fixtures;
 import me.hskwon.simple_shopping_site.application.orders.CreateOrderService;
+import me.hskwon.simple_shopping_site.models.Payment;
+import me.hskwon.simple_shopping_site.models.Receiver;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -26,21 +30,33 @@ class OrderControllerTest extends ControllerTest {
     @Test
     @DisplayName("POST /orders")
     void testCreateOrder() throws Exception {
+        Receiver receiver = Fixtures.receiver();
+        Payment payment = Fixtures.payment();
+
         String json = """
                 {
                     "receiver": {
-                        "name": "홍길동",
-                        "address1": "서울특별시 성동구 상원12길 34",
-                        "address2": "ㅇㅇㅇ호",
-                        "postalCode": "04790",
-                        "phoneNumber": "01012345678"
+                        "name": "%s",
+                        "address1": "%s",
+                        "address2": "%s",
+                        "postalCode": "%s",
+                        "phoneNumber": "%s"
                     },
                     "payment": {
-                        "merchantId": "ORDER-20230101-00000001",
-                        "transactionId": "123456789012"
+                        "merchantId": "%s",
+                        "transactionId": "%s"
                     }
                 }
-                """;
+                """
+                .formatted(
+                        receiver.name(),
+                        receiver.address().address1(),
+                        receiver.address().address2(),
+                        receiver.address().postalCode().toString(),
+                        receiver.phoneNumber().toString(),
+                        payment.merchantId(),
+                        payment.transactionId()
+                );
 
         RequestBuilder requestBuilder = post("/orders")
                 .header("Authorization", "Bearer %s".formatted(accessToken))
@@ -50,6 +66,6 @@ class OrderControllerTest extends ControllerTest {
         mockMvc.perform(requestBuilder)
                 .andExpect(status().isCreated());
 
-        verify(createOrderService).createOrder(any());
+        verify(createOrderService).createOrder(any(), eq(receiver), eq(payment));
     }
 }

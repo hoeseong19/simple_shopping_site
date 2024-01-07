@@ -2,7 +2,7 @@ package me.hskwon.simple_shopping_site.controllers;
 
 import me.hskwon.simple_shopping_site.application.orders.CreateOrderService;
 import me.hskwon.simple_shopping_site.dtos.CreateOrderDto;
-import me.hskwon.simple_shopping_site.models.UserId;
+import me.hskwon.simple_shopping_site.models.*;
 import me.hskwon.simple_shopping_site.security.AuthUser;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -27,6 +27,27 @@ public class OrderController {
 
         UserId userId = new UserId(authUser.id());
 
-        createOrderService.createOrder(userId);
+        Receiver receiver = new Receiver(
+                dto.receiver().name(),
+                new Address(
+                        dto.receiver().address1(),
+                        dto.receiver().address2(),
+                        new PostalCode(dto.receiver().postalCode())
+                ),
+                new PhoneNumber(
+                        dto.receiver().phoneNumber()
+                )
+        );
+
+        Payment payment = new Payment(
+                dto.payment().merchantId(),
+                dto.payment().transactionId()
+        );
+
+        createOrderService.createOrder(
+                userId,
+                receiver,
+                payment
+        );
     }
 }
