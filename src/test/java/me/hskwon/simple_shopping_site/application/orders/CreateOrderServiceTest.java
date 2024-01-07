@@ -4,7 +4,9 @@ import me.hskwon.simple_shopping_site.repositories.OrderRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 class CreateOrderServiceTest {
     private CreateOrderService createOrderService;
@@ -19,5 +21,7 @@ class CreateOrderServiceTest {
     @Test
     void testCreateOrder() {
         createOrderService.createOrder();
+
+        verify(orderRepository).save(any());
     }
 }
