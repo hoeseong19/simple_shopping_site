@@ -3,6 +3,7 @@ package me.hskwon.simple_shopping_site.models;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -42,6 +43,18 @@ public class CartLineItem extends BaseEntity {
 
     public ProductId productId() {
         return productId;
+    }
+
+    public List<ProductOptionId> optionIds() {
+        return options.stream().map(CartLineItemOption::optionId).toList();
+    }
+
+    public ProductOptionItemId optionItemId(ProductOptionId optionId) {
+        return options.stream()
+                .filter(cartOption -> cartOption.optionId().toString().equals(optionId.toString()))
+                .map(CartLineItemOption::optionItemId)
+                .findFirst()
+                .orElseThrow();
     }
 
     public int quantity() {
