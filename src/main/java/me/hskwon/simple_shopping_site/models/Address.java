@@ -10,10 +10,10 @@ import java.util.Objects;
 public class Address {
     @Column(name = "address1")
     private String address1;
-    
+
     @Column(name = "address2")
     private String address2;
-    
+
     @Embedded
     private PostalCode postalCode;
 
@@ -37,5 +37,17 @@ public class Address {
     @Override
     public int hashCode() {
         return Objects.hash(address1, address2, postalCode);
+    }
+
+    public String address1() {
+        return address1;
+    }
+
+    public String address2() {
+        return address2;
+    }
+
+    public PostalCode postalCode() {
+        return postalCode;
     }
 }

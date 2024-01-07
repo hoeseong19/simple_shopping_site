@@ -38,4 +38,16 @@ public class Receiver {
     public int hashCode() {
         return Objects.hash(name, address, phoneNumber);
     }
+
+    public String name() {
+        return name;
+    }
+
+    public Address address() {
+        return address;
+    }
+
+    public PhoneNumber phoneNumber() {
+        return phoneNumber;
+    }
 }
