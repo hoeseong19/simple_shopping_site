@@ -23,10 +23,16 @@ public class Order extends BaseEntity<OrderId> {
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
-    public Order(OrderId id, UserId userId, Receiver receiver, Payment payment) {
+    public Order(OrderId id,
+                 UserId userId,
+                 Receiver receiver,
+                 Payment payment,
+                 OrderStatus status
+    ) {
         super(id);
         this.userId = userId;
         this.receiver = receiver;
         this.payment = payment;
+        this.status = status;
     }
 }
