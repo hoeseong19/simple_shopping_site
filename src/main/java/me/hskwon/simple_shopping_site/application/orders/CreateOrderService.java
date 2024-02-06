@@ -6,6 +6,7 @@ import me.hskwon.simple_shopping_site.models.*;
 import me.hskwon.simple_shopping_site.repositories.CartRepository;
 import me.hskwon.simple_shopping_site.repositories.OrderRepository;
 import org.springframework.stereotype.Service;
+import java.util.NoSuchElementException;
 
 @Service
 @Transactional
@@ -23,6 +24,9 @@ public class CreateOrderService {
             Receiver receiver,
             Payment payment
     ) {
+        Cart cart = cartRepository.findByUserId(userId)
+                .orElseThrow(NoSuchElementException::new);
+
         Order newOrder = new Order(
                 OrderId.generate(),
                 userId,
